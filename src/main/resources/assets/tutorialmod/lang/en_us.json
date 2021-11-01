@@ -1,0 +1,9 @@
+{
+	"item.tutorialmod.example_item": "Example Item",
+	"block.tutorialmod.example_block": "Example Block",
+	"entity.tutorialmod.example_entity": "Example Entity",
+	"item.tutorialmod.example_entity_spawn_egg": "Spawn Example Entity",
+	"itemGroup.tutorialmod": "Tutorial Mod",
+	"item.tutorialmod.clicker": "Clicker",
+	"block.tutorialmod.lightning_jumper": "Lightning Jumper"
+}
