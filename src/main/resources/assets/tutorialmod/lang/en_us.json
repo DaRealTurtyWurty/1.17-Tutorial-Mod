@@ -16,5 +16,6 @@
 	"item.tutorialmod.bean_helmet": "Bean-Infused Helmet",
 	"item.tutorialmod.bean_chestplate": "Bean-Infused Chestplate",
 	"item.tutorialmod.bean_leggings": "Bean-Infused Leggings",
-	"item.tutorialmod.bean_boots": "Bean-Infused Boots"
+	"item.tutorialmod.bean_boots": "Bean-Infused Boots",
+	"key.tutorialmod.example_key": "Example Key"
 }

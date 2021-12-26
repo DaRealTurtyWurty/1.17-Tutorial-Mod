@@ -3,6 +3,7 @@ package io.github.darealturtywurty.tutorialmod.core.event;
 import io.github.darealturtywurty.tutorialmod.TutorialMod;
 import io.github.darealturtywurty.tutorialmod.common.entity.ExampleEntity;
 import io.github.darealturtywurty.tutorialmod.core.init.EntityInit;
+import io.github.darealturtywurty.tutorialmod.core.init.PacketHandler;
 import io.github.darealturtywurty.tutorialmod.core.world.OreGeneration;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,6 +17,7 @@ public class CommonModEvents {
     @SubscribeEvent
     public static void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(OreGeneration::registerOres);
+        event.enqueueWork(PacketHandler::init);
     }
 
     @SubscribeEvent

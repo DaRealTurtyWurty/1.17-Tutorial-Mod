@@ -6,21 +6,30 @@ import java.util.UUID;
 
 import io.github.darealturtywurty.tutorialmod.common.entity.SittableEntity;
 import io.github.darealturtywurty.tutorialmod.core.init.BlockEntityInit;
+import io.github.darealturtywurty.tutorialmod.core.init.PacketHandler;
+import io.github.darealturtywurty.tutorialmod.core.init.SoundInit;
+import io.github.darealturtywurty.tutorialmod.core.network.ClientboundUpdateToiletPacket;
+import io.github.darealturtywurty.tutorialmod.core.network.ServerboundToiletUpdatePacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class ToiletBlockEntity extends BlockEntity {
 
+    public static final int FART_TIME = 40;
     public SittableEntity seat;
-    public int ticks = 0;
+    public int ticks = 0, fartTicker = 0;
     public final Map<UUID, Integer> playerUses = new HashMap<>();
+    public boolean isShitting;
 
     public ToiletBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityInit.TOILET.get(), pos, state);
@@ -103,7 +112,32 @@ public class ToiletBlockEntity extends BlockEntity {
         }
     }
 
+    public void setShitting() {
+        if (!this.isShitting) {
+            this.isShitting = true;
+            this.fartTicker = 0;
+            PacketHandler.INSTANCE.sendToServer(new ServerboundToiletUpdatePacket(this.worldPosition));
+        }
+    }
+
     public void tick() {
+        if (this.isShitting) {
+            if (this.fartTicker <= 0) {
+                this.level.playSound((Player) null, this.worldPosition, SoundInit.FART.get(),
+                        SoundSource.BLOCKS, 1.0f, 1.0f);
+            }
+
+            if (++this.fartTicker >= FART_TIME) {
+                this.isShitting = false;
+                this.fartTicker = 0;
+                this.seat.ejectPassengers();
+                PacketHandler.INSTANCE.send(
+                        PacketDistributor.TRACKING_CHUNK
+                                .with(() -> this.level.getChunkAt(this.worldPosition)),
+                        new ClientboundUpdateToiletPacket(this.worldPosition));
+            }
+        }
+
         if (this.ticks % 5 == 0 && (this.seat == null || this.seat.isRemoved())) {
             if (this.seat != null) {
                 this.seat.kill();

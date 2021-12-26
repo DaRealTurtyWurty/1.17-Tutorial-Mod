@@ -15,5 +15,11 @@
 		"sounds": [
 			"tutorialmod:example_entity_hurt"
 		]
+	},
+	
+	"block.toilet.fart": {
+		"sounds": [
+			"tutorialmod:fart"
+		]
 	}
 }

@@ -1,6 +1,7 @@
 package io.github.darealturtywurty.tutorialmod.client.event;
 
 import io.github.darealturtywurty.tutorialmod.TutorialMod;
+import io.github.darealturtywurty.tutorialmod.client.KeyInit;
 import io.github.darealturtywurty.tutorialmod.client.renderer.ExampleEntityRenderer;
 import io.github.darealturtywurty.tutorialmod.client.renderer.SeatRenderer;
 import io.github.darealturtywurty.tutorialmod.client.renderer.model.ExampleEntityModel;
@@ -24,6 +25,7 @@ public final class ClientModEvents {
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         ItemBlockRenderTypes.setRenderLayer(BlockInit.LIGHTNING_JUMPER.get(), RenderType.cutout());
+        KeyInit.init();
     }
 
     @SubscribeEvent
